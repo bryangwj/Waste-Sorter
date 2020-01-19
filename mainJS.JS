@@ -11,28 +11,20 @@ var webcamStream;
 
 function startWebcam() {
     if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia (
+        webcamStream = navigator.mediaDevices.getUserMedia (
             // constraints
             {
                 video: true,
                 audio: false
-            },
-
-    // successCallback
-        function(localMediaStream) {
-            video = document.querySelector('video');
-            video.src = window.URL.createObjectURL(localMediaStream);
-            webcamStream = localMediaStream;
-            },
-
-            // errorCallback
-            function(err) {
-                console.log("The following error occured: " + err);
-            }
-            );
-    } else {
-        console.log("getUserMedia not supported");
-    }  
+            }).then(function(mediaStream) {
+                video = document.querySelector('video');
+                video.srcObject = mediaStream;
+                video.onloadedmetadata = function(e) {
+                video.play();
+            };
+          })
+          .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+    }
 }
 
 function stopWebcam() {
@@ -52,5 +44,6 @@ function init() {
 
 function snapshot() {
 // Draws current image from the video element into the canvas
+
     ctx.drawImage(video, 0,0, canvas.width, canvas.height);
 }
