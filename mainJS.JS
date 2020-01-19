@@ -44,6 +44,9 @@ function init() {
 
 function snapshot() {
 // Draws current image from the video element into the canvas
-
     ctx.drawImage(video, 0,0, canvas.width, canvas.height);
+
+    //add the code to get jpg file from ctx,
+    //add something to run the python model on the jpg file to predict trash or not
+    //add a text to the ctx on whether it is trash
 }
